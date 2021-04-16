@@ -1,10 +1,18 @@
 <?php
 
+use controller\HomeController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
+
+spl_autoload_register(function ($className) {
+    $filePath = '../' . str_replace('\\', '/', $className) . '.php';
+    if (file_exists($filePath)) {
+        require($filePath);
+    }
+});
 
 /**
  * Instantiate App
@@ -15,6 +23,7 @@ require __DIR__ . '/../vendor/autoload.php';
  */
 $app = AppFactory::create();
 
+// Adapt rooter to sub directory
 $app->setBasePath(rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/'));
 
 // Add Routing Middleware
@@ -40,10 +49,8 @@ $app->get('/hello/{name}', function (Request $request, Response $response, $args
     return $response;
 });
 
-$app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write("Hello tout court");
-    return $response;
-});
+
+$app->get('/', HomeController::class . ':home');
 
 // Run app
 $app->run();
