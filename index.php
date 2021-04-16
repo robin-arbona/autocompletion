@@ -1,14 +1,15 @@
 <?php
 
 use controller\HomeController;
+use controller\SearchController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 spl_autoload_register(function ($className) {
-    $filePath = '../' . str_replace('\\', '/', $className) . '.php';
+    $filePath =  str_replace('\\', '/', $className) . '.php';
     if (file_exists($filePath)) {
         require($filePath);
     }
@@ -43,14 +44,16 @@ $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 // Define app routes
-$app->get('/hello/{name}', function (Request $request, Response $response, $args) {
-    $name = $args['name'];
-    $response->getBody()->write("Hello, $name");
-    return $response;
-});
-
 
 $app->get('/', HomeController::class . ':home');
+
+$app->get('/{name}', HomeController::class . ':home');
+
+$app->get('/search/{keyword}', SearchController::class . ':search');
+
+$app->get('/show/{id}', SearchController::class . ':search');
+
+
 
 // Run app
 $app->run();

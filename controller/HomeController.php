@@ -7,20 +7,21 @@ use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-class HomeController extends Controller
+
+class HomeController
 {
     private $twig;
 
-    // constructor receives container instance
     public function __construct()
     {
-        $loader = new FilesystemLoader('../view');
+        $loader = new FilesystemLoader('view');
         $this->twig = new Environment($loader);
     }
 
     public function home(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        $response->getBody()->write($this->twig->render('home.twig.php', ['name' => 'robin']));
+        $name = isset($args['name']) ? $args['name'] : 'you!';
+        $response->getBody()->write($this->twig->render('home.twig.php', ['name' => $name]));
         return $response;
     }
 }
