@@ -15,7 +15,7 @@ require __DIR__ . '/../vendor/autoload.php';
  */
 $app = AppFactory::create();
 
-$app->setBasePath('/Projectpool3/autocompletion/public');
+$app->setBasePath(rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/'));
 
 // Add Routing Middleware
 $app->addRoutingMiddleware();
