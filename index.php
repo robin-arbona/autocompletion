@@ -48,7 +48,7 @@ $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', HomeController::class . ':home');
 
-$app->get('/search/{keyword:[\w]+}[/{show}]', SearchController::class . ':search');
+$app->get('/search/{keyword:[\w%]+}[/{show}]', SearchController::class . ':search');
 
 $app->get('/show/{id:[0-9]+}', SearchController::class . ':show');
 
