@@ -25,7 +25,8 @@ spl_autoload_register(function ($className) {
 $app = AppFactory::create();
 
 // Adapt rooter to sub directory
-$app->setBasePath(rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/'));
+define('BASE_PATH', rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/'));
+$app->setBasePath(BASE_PATH);
 
 // Add Routing Middleware
 $app->addRoutingMiddleware();
@@ -47,11 +48,16 @@ $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', HomeController::class . ':home');
 
-$app->get('/{name}', HomeController::class . ':home');
+$app->get('/search/{keyword:[\w]+}[/{show}]', SearchController::class . ':search');
 
-$app->get('/search/{keyword}', SearchController::class . ':search');
+$app->get('/show/{id:[0-9]+}', SearchController::class . ':show');
 
-$app->get('/show/{id}', SearchController::class . ':search');
+$app->get('/{slug:.*base_path.*}', function (Request $request, Response $response, array $args): Response {
+    $response->getBody()->write(json_encode(['base_path' => BASE_PATH]));
+    return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(201);
+});
 
 
 

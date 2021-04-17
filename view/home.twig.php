@@ -12,5 +12,4 @@
 
 {% block script %}
 {{ parent() }}
-<script src="public/js/home.js"></script>
 {% endblock %}

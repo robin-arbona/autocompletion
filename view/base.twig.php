@@ -24,11 +24,6 @@
                 <form method="GET" action="search">
                     <input id="searchInput" list="autocompletion" type="search" name="search" placeholder="Nom de l'animal" value="">
                     <datalist id="autocompletion">
-                        <option value="Edge">
-                        <option value="Firefox">
-                        <option value="Chrome">
-                        <option value="Opera">
-                        <option value="Safari">
                     </datalist>
                     <input id="searchBtn" type="submit" name="submit" value="Search">
                 </form>
@@ -48,6 +43,8 @@
         {% endblock %}
     </footer>
     {% block script %}
+    <script src="{{ BASE_PATH }}/public/js/home.js"></script>
+
     {% endblock %}
 </body>
 
