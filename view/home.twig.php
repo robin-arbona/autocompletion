@@ -12,4 +12,5 @@
 
 {% block script %}
 {{ parent() }}
+<script src></script>
 {% endblock %}
